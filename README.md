@@ -3,7 +3,7 @@
 
 ### Obs: no momento, apenas pacientes possuem todas as funcionalidades implementadas.
 
-## Endpoints: GET, PUT, DELETE, POST
+## Endpoints: GET, PUT, DELETE, POST, GET/id
 
  `http://localhost/sua_api/update.php`
 
