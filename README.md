@@ -1,13 +1,13 @@
-# nutri Api 
+# Nutri Api 
 ## A Nutri API é uma interface de programação de aplicativos (API) que fornece acesso a recursos relacionados a pacientes, médicos e receitas. Ela permite a atualização de informações dessas entidades por meio de requisições HTTP, oferecendo operações básicas como criar, recuperar, atualizar e excluir dados.
 
-### obs: no momento, apenas pacientes possuem todas as funcionalidades implementadas.
+### Obs: no momento, apenas pacientes possuem todas as funcionalidades implementadas.
 
-## edpoints: GET, PUT, DELETE, POST
+## Endpoints: GET, PUT, DELETE, POST
 
  `http://localhost/sua_api/update.php`
 
- ## requisão POST
+ ## Requisisão POST
 
   `{
     "tipo_entidade": "paciente",
@@ -25,13 +25,13 @@
     }
 }
 `
-## resposta de sucesso
+## Resposta de sucesso
 `{
     "erro": false,
     "mensagem": "Paciente atualizado com sucesso."
 }
 `
-## respsota de erro
+## Resposta de erro
 
 `{
     "erro": true,
