@@ -1,60 +1,56 @@
-
 <?php
-//criando cabelho para quem que ter acesso na api
-
+// Criando cabeçalho para permitir acesso à API
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset-UTF-8");
-
+header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: *");
+
 include_once 'connect.php';
 
+$response_json = file_get_contents("php://input");
+$dados = json_decode($response_json, true);
 
-$response_json=file_get_contents("php://input");
-//lendo
- $dados= json_decode($response_json, true);
+if ($dados) {
+    // Query para atualizar paciente
+    $query_paciente = "UPDATE pacientes SET nome=:nome, idade=:idade, genero=:genero, historico=:historico, objetivo=:objetivo, statusSaude=:statusSaude, email=:email, telefone=:telefone, senha=:senha WHERE id=:id";
 
- if($dados){
-   //query
-$query_produto= "UPDATE produtos SET titulo=:titulo, descricao=:descricao WHERE id=:id";
-//instanciando
-$edit_produto= $conn->prepare($query_produto);
-//substituido
-$edit_produto->bindParam(':titulo',$dados['titulo'], PDO::PARAM_STR);
-$edit_produto->bindParam(':descricao',$dados['descricao'], PDO::PARAM_STR);
+    // Preparando a consulta
+    $edit_paciente = $conn->prepare($query_paciente);
 
-$edit_produto->bindParam(':id', $dados['id'], PDO::PARAM_INT);
+    // Substituindo parâmetros
+    $edit_paciente->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
+    $edit_paciente->bindParam(':idade', $dados['idade'], PDO::PARAM_INT);
+    $edit_paciente->bindParam(':genero', $dados['genero'], PDO::PARAM_STR);
+    $edit_paciente->bindParam(':historico', $dados['historico'], PDO::PARAM_STR);
+    $edit_paciente->bindParam(':objetivo', $dados['objetivo'], PDO::PARAM_STR);
+    $edit_paciente->bindParam(':statusSaude', $dados['statusSaude'], PDO::PARAM_STR);
+    $edit_paciente->bindParam(':email', $dados['email'], PDO::PARAM_STR);
+    $edit_paciente->bindParam(':telefone', $dados['telefone'], PDO::PARAM_STR);
+    $edit_paciente->bindParam(':senha', $dados['senha'], PDO::PARAM_STR);
+    $edit_paciente->bindParam(':id', $dados['id'], PDO::PARAM_INT);
 
-$edit_produto->execute();
+    // Executando a consulta
+    $edit_paciente->execute();
 
-if($edit_produto->rowCount()){
-   $response=[
-      "erro"=>false,
-      "messagem"=>"produto editado com sucesso"
-      //"data"=>$dados
-   ];
-
-}else{
-   $response=[
-      "erro"=>false,
-      "messagem"=>"produto não editado com sucesso!!"
-      //"data"=>$dados
-   ];
+    // Verificando o resultado
+    if ($edit_paciente->rowCount()) {
+        $response = [
+            "erro" => false,
+            "mensagem" => "Paciente atualizado com sucesso"
+        ];
+    } else {
+        $response = [
+            "erro" => true,
+            "mensagem" => "Falha ao atualizar paciente"
+        ];
+    }
+} else {
+    $response = [
+        "erro" => true,
+        "mensagem" => "Dados inválidos"
+    ];
 }
 
-}else{
-    $response=[
-        "erro"=>false,
-        "messagem"=>"produto não editado com sucesso!"
-        //"data"=>$dados
-     ];
- }
- //um array
- /*$response=[
-    "erro"=>false,
-    "messagem"=>"",
-    "data"=>$dados
- ];*/
-
- http_response_code(200);
- //converte array em um objeto
- echo json_encode($response);
+// Respondendo com o resultado em formato JSON
+http_response_code(200);
+echo json_encode($response);
+?>
