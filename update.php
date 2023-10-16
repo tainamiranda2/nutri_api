@@ -2,12 +2,13 @@
 // Criando cabeçalho para permitir acesso à API
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: PUT");
 header("Access-Control-Allow-Headers: *");
 
 include_once 'connect.php';
 
-$response_json = file_get_contents("php://input");
-$dados = json_decode($response_json, true);
+// Obtendo dados do corpo da solicitação PUT
+$dados = json_decode(file_get_contents("php://input"), true);
 
 if ($dados) {
     // Query para atualizar paciente
@@ -33,6 +34,8 @@ if ($dados) {
 
     // Verificando o resultado
     if ($edit_paciente->rowCount()) {
+        //var_dump($edit_paciente);
+
         $response = [
             "erro" => false,
             "mensagem" => "Paciente atualizado com sucesso"
